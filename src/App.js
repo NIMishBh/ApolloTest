@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import {ApolloClient, ApolloProvider, gql, InMemoryCache} from "@apollo/client";
+import GetUsers from "./components/GetUsers";
+import AddUsers from "./components/AddUsers";
+import { HASURA_GRAPHQL_URL, HASURA_ADMIN_SECRET } from './env.json';
+
+const apolloClient = new ApolloClient({
+  uri: HASURA_GRAPHQL_URL,
+  cache: new InMemoryCache(),
+  headers:{
+      'x-hasura-admin-secret': HASURA_ADMIN_SECRET
+  }
+});
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApolloProvider client={apolloClient}>
+      <div className="App">
+        <h1>Hello!</h1>
+      </div>
+      <GetUsers />
+      <AddUsers />
+    </ApolloProvider>
   );
 }
 
